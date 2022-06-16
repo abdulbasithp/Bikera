@@ -28,8 +28,13 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
+<<<<<<< HEAD
 ALLOWED_HOSTS = ['13.126.27.58']
 STATIC_ROOT = os.path.join( BASE_DIR, 'staticfiles')
+=======
+ALLOWED_HOSTS = ['*']
+STATIC_ROOT = '/var/www/mysite/assets/'
+>>>>>>> b16fdb0b3d2548f8173748afe86afc063f4d1a94
 
 
 # Application definition
