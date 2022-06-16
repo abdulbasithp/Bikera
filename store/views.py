@@ -1,10 +1,5 @@
-
-
-from django.http import HttpResponse
 from cart.models import Address
-from turtle import title
 from django.shortcuts import redirect, render, get_object_or_404
-
 from order.models import OrderProduct
 from store.forms import ProductReviewForm
 from .models import Brand, Product, Category, ProductReview
