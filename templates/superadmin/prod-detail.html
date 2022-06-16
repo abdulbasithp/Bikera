@@ -1,0 +1,141 @@
+{% extends 'superadmin/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class=" my-4 mx-4 p-3 rounded-4" style="font-size: 12px;box-shadow:0px 0px 47px 27px #dfdddd ;">
+
+    {% if messages %}
+    <div class="alert alert-danger mx-auto" role="alert">
+
+        <div class="messages">
+            {% for message in messages %}
+            <div{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {% if product.is_active %}
+
+    <div class="form-check form-switch mb-3">
+        <label class="form-check-label" for="showtocustomer">Show to Customer</label>
+        {{form.is_active}}
+    </div>
+    {% else %}
+    <div class="form-check form-switch">
+
+        <label class="form-check-label" for="showtocustomer">Show to Customer</label>
+        {{form.is_active}}
+    </div>
+
+    {% endif %}
+
+    <div class="mb-3">
+        <label for="producttitle" class="form-label">Product Title :</label>
+        {{form.title}}
+    </div>
+    <div class="mb-3 d-flex">
+        <div class=" w-25">
+            <label class="form-label">Category :</label>
+            {{form.category}}
+        </div>
+        <div class="ms-3 w-25">
+            <label class="form-label">Brand :</label>
+            {{form.brand}}
+        </div>
+        <div class="ms-3 w-25">
+            <label class="form-label">CC :</label>
+            {{form.displacement}}
+        </div>
+        <div class="ms-3 w-25">
+            <label class="form-label">Brand :</label>
+            {{form.mileage}}
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="productdesc" class="form-label"> Description :</label><br>
+        {{form.description}}
+    </div>
+
+    <label class="mb-2" for="images">Images :</label>
+        <div class=" d-flex justify-content-between">
+            <div class="card m-1" style="width: 14rem;">
+                {% if product.image1 %}
+                <img src="{{product.image1.url}}" class="card-img-top p-3" alt="">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">Image 1</h5>
+                    {{form.image1}}
+                </div>
+            </div>
+
+            <div class="card m-1" style="width: 13rem;">
+                {% if product.image2 %}
+                <img src="{{product.image2.url}}" class="card-img-top p-3" alt="">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">Image 2</h5>
+                    {{form.image2}}
+                </div>
+            </div>
+
+            <div class="card m-1" style="width: 13rem;">
+                {% if product.image3 %}
+                <img src="{{product.image3.url}}" class="card-img-top p-3" alt="">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">Image 3</h5>
+                    {{form.image3}}
+                </div>
+            </div>
+
+            <div class="card m-1" style="width: 13rem;">
+                {% if product.image4 %}
+                <img src="{{product.image4.url}}" class="card-img-top p-3" alt="">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">Image 4</h5>
+                    {{form.image4}}
+                </div>
+            </div>
+        </div>
+  
+    <div class="mb-3 d-flex">
+        <div class="ms-5 w-25">
+            <label class="form-label">Price :</label>
+            {{form.price}}
+        </div>
+
+        <div class="ms-5 w-25">
+            <label class="form-label">Stock :</label>
+            {{form.stock}}
+        </div>
+    </div>
+
+    <div class="mb-3 d-flex">
+
+        <h6 class="ms-5">Created Date : {{product.created}} </h6>
+        <h6 class="ms-5">Modified Date : {{product.updated}} </h6>
+    </div>
+    <div class="d-flex justify-content-end ">
+        <input class="btn btn-sm btn-primary mb-2 w-25" type="submit" value="Update">
+
+    </div>
+</form>
+<div class="container d-flex justify-content-end w-25">
+    <div>
+        <a href="{% url 'superadmin:delete-product' product.id %}"><button class="btn btn-sm btn-outline-danger mb-2  ">
+                Delete Product</button></a>
+    </div>
+</div>
+
+</div>
+
+
+{% endblock %}

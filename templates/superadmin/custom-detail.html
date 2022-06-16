@@ -1,0 +1,43 @@
+{% extends 'superadmin/base.html' %}
+
+{% block content %}
+<div class=" mt-4 mx-4 p-3 rounded-4" style="font-size: 12px;box-shadow:0px 0px 47px 27px #dfdddd ;">
+    <div class="col-6">
+        <table width="800px" class="ms-5">
+            <tr>
+                <td width="400px"><p>First Name      : {{customer.first_name}}</p></td>
+                <td><p>Last Name      : {{customer.last_name}}</p></td>
+            </tr>
+            <tr>
+                <td width="400px"><p>Email address   : {{customer.email}}</p></td>
+                <td><p>
+                    {% if customer.is_verified %}
+                    Email Verified      : <span style="color: rgb(69, 197, 69);">Verified</span>
+                    {% else %}
+                    Email Verified      : <span style="color: red;">Not Verified</span>
+                    {% endif %}
+                </p></td>
+            </tr>
+            <tr>
+                <td><p>
+                    {% if customer.is_active %}
+
+            <a href="{% url 'superadmin:block-customer' customer.id %}" class="text-success">Active User (not blocked)</a>
+            {% else %}
+            <a href="{% url 'superadmin:block-customer' customer.id %}" class="text-danger">Not Active (blocked)</a>
+                
+              {% endif %}
+                </p></td>
+                <td><p>Mobile No.     : {{customer.mobile}}</p></td>
+            </tr>
+            <tr>
+                <td><p>Date Joined   : {{customer.date_joined}}</p></td>
+                <td><p>Last Login   : {{customer.last_login}}</p></td>
+            </tr>
+        </table>
+      
+    </div>
+  
+</div>
+
+{% endblock %}

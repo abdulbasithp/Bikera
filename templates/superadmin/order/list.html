@@ -1,0 +1,30 @@
+
+ {% extends 'superadmin/base.html' %}
+
+ {% block content %}
+
+<div class=" mt-4 mx-4 p-3 rounded-4" style="font-size: 12px;box-shadow:0px 0px 47px 27px #dfdddd ;">
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Order Number</th>
+        <th scope="col">Customer</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Status</th>
+        <th scope="col">Detail</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+      <tr>
+        <th scope="row">{{order.order_number}}</th>
+        <td>{{order.user.first_name}} {{order.user.last_name}}</td>
+        <td>{{order.order_total}}</td>
+        <td>{{order.status}}</td>
+        <td><a href=""class="btn btn-sm btn-outline-primary">Details</a></td>
+      </tr>
+     {% endfor %}
+    </tbody>
+  </table>
+</div>
+  {% endblock %}

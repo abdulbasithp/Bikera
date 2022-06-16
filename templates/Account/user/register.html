@@ -1,0 +1,54 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<div class="text-center">
+    <main class="form-signin w-100 m-auto r">
+        <form class=" w-50 mx-auto" method="post">
+            {% csrf_token %}
+            <h1  class=" h3 mx-auto mb-3 mt-5 fw-normal">Please sign Up</h1>
+            <div class=" d-flex">
+                <div class="m-1 w-50 form-floating">
+                    {{form.first_name}}
+                    <label for="floatingInput">Firstname</label>
+                </div>
+                <div class="w-50 m-1 form-floating">
+                    {{form.last_name}}
+                    <label for="floatingInput">Lastname</label>
+                </div>
+            </div>
+        
+            <div class="m-1 form-floating">
+                {{form.email}}
+                <label for="floatingInput">Email address</label>
+            </div>
+            <div class="m-1 form-floating">
+                {{form.mobile}}
+                <label for="floatingInput">Mobile</label>
+            </div>
+            <div class=" m-1 form-floating">
+                {{form.password}}
+                <label for="floatingPassword">Password</label>
+            </div>
+            <div class=" m-1 form-floating">
+                {{form.confirm_password}}
+                <label for="floatingPassword">Confirm Password</label>
+            </div>
+
+            <button class="m-1 mt3 w-100 btn btn-lg btn-outline-primary" type="submit">Sign in</button>
+        </form>
+        <p>if you have registered account, please <a href="{% url 'user:login-user' %}">sigin</a> </p>
+    </main>
+    {% if messages %}
+    <div class="alert alert-danger w-25 mx-auto" role="alert">
+      
+    <div class="messages">
+        {% for message in messages %}
+         <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>        
+         {{ message }}
+    </div>
+        {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+{% endblock %}

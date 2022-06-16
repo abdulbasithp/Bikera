@@ -1,0 +1,22 @@
+{% extends 'superadmin/base.html' %}
+ {% block content %}
+
+<div class="container" style="margin-top: 20vh;">
+    <div class="row justify-content-center ">
+        <div class="col-8 align-self-center ">
+            <p class="text-danger">
+            Do you want to delete product <b>{{product.title}}</b> ?
+            </p>
+            <form action="" method="post">
+                {% csrf_token %}
+                <input class="btn btn-sm btn-danger mb-5" type="submit" value="Confirm">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+<div class="">
+    One of three columns
+  </div>

@@ -1,0 +1,14 @@
+{% extends 'store/base.html' %}
+{% block content %}
+<h1>redirecting to marchant page</h1>
+<h1>Please do not refresh this page...</h1>
+<form  action="https://securegw-stage.paytm.in/theia/processTransaction" method="post" name="paytm">
+    {% for key, value in param_dict.items %}
+        <input type="hidden" name="{{key}}" value="{{value}}">
+    {% endfor %}
+<script type="text/javascript">
+    document.paytm.submit();
+</script>
+</form>
+{% endblock %}
+

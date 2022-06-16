@@ -1,0 +1,198 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block title %}{{category.name}}{% endblock title %}
+{% block content %}
+
+<style>
+    .card {
+        -webkit-animation: slide-bck-center 1s cubic-bezier(0.470, 0.000, 0.745, 0.715) both;
+                animation: slide-bck-center 1s cubic-bezier(0.470, 0.000, 0.745, 0.715) both;
+    }
+    @keyframes slide-bck-center {
+        0% {
+          -webkit-transform: translateZ(0);
+                  transform: translateZ(0);
+        }
+        100% {
+          -webkit-transform: translateZ(-400px);
+                  transform: translateZ(-400px);
+        }
+      }
+    .card:hover {
+        -webkit-animation: shadow-drop-2-bottom 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+                animation: shadow-drop-2-bottom 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    }
+    @keyframes shadow-drop-2-bottom {
+        0% {
+          -webkit-transform: translateZ(0) translateY(0);
+                  transform: translateZ(0) translateY(0);
+          -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+                  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        }
+        100% {
+          -webkit-transform: translateZ(50px) translateY(-12px);
+                  transform: translateZ(50px) translateY(-12px);
+          -webkit-box-shadow: 0 12px 20px -12px rgba(0, 0, 0, 0.35);
+                  box-shadow: 0 12px 20px -12px rgba(0, 0, 0, 0.35);
+        }
+      }
+</style>
+
+<div class="container min-vh-100  pt-4">
+    <div class="row ">
+        <h3 class="pb-3 h5">{{category.name}}</h3>
+        <!------------------- sidebar------------------------- -->
+                <!-- categories in sidebar  -->
+        <div class="col-lg-3 col-md-2 col-sm-2">
+            <div class="accordion" id="accordionExample">
+                <!-- {% comment %} accordion 1  {% endcomment %} -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Categories
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                        data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <a class="dropdown-item" href="{% url 'store:all-products' %}">All</a>
+                            {% for category in categories %}
+                            
+                                <a class="dropdown-item" href="{{category.get_absolute_url}}">{{category.name}}</a>
+                           
+                            {% endfor %}
+                            
+                        </div>
+                    </div>
+                </div>
+                <!-- filter area  -->
+                <!-- {% comment %} accordion 2  {% endcomment %} -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Filter by
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                        data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <h6>Brands</h6>
+                           {% for brand in brands %}
+                           <div class="form-check">
+                            <input class="brand-filter form-check-input" type="checkbox" value="{{brand.id}}" id="flexCheckDefault{{brand.id}}">
+                            <label class="form-check-label" for="flexCheckDefault{{brand.id}}">
+                              {{brand.name}}
+                            </label>
+                          </div>
+                          {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- sort area  -->
+                <!-- {% comment %} accordion 3 {% endcomment %} -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Sort by
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                        data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <strong>This is the second item's accordion body.</strong> It is hidden by default, until
+                            the collapse plugin adds the appropriate classes that we use to style each element. These
+                            classes control the overall appearance, as well as the showing and hiding via CSS
+                            transitions. You can modify any of this with custom CSS or overriding our default variables.
+                            It's also worth noting that just about any HTML can go within the
+                            <code>.accordion-body</code>, though the transition does limit overflow.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!---------------------------- product list ------------------- -->
+        <div class="col-lg-9 col-md-10  min-vh-100 ">
+            <div class="row row-cols-sm-1 row-cols-md-2 d-flex justify-content-sm-start ">
+                {% for product in products %}
+                <div class="card m-1 " style="width: 16rem;height:20rem;background-color:#ffff;">
+                    <img class="img-fluid pt-2" src="{{product.image1.url}}" alt="responsive image">
+                    <div class="card-body">
+                        <h5 class="card-title"><a class="text-dark text-decoration-none"
+                                href="{{product.get_absolute_url}}">{{product.title}}</a></h5>
+                        <p class="card-text">₹{{product.price}}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a type="button" href="{% url 'cart:cart-add' product.id %}"
+                                class="btn btn-sm btn-outline-secondary w-50">add to cart</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="d-flex justify-content-end">
+                <nav class="ms-4 mt-3" aria-label="Page navigation example">
+                    {% if products.has_other_pages%}
+                    <ul class="pagination">
+                        {% if products.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ products.previous_page_number }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% for i in products.paginator.page_range %}
+                        {% if products.number == i %}
+                        <li class="page-item active "><a class="page-link" href="#">{{i}}</a></li>
+                        {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if products.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ products.next_page_number }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    {% endif %}
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <script>
+    $(document).ready(function() {
+        $(".brand-filter").on('click',function(){
+            var _filterObj = {};
+            $("brand-filter").each(function(index,ele){
+                var _filterValue = $(this).val()  
+                var _filterKey  = $(this).data("filter");
+                _filterArray[_filterKey]=Array.from(document.querySelectorAll('input[data-filter='+_filterKey+']:checked')).map(function(){
+                    return el.value;
+                });
+            });
+            console.log(_filterObj);
+        });
+    });
+</script> -->
+
+{% endblock content %}

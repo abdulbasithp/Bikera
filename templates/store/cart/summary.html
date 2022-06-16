@@ -1,0 +1,107 @@
+{% extends '../base.html' %} {% block title %}Cart{% endblock title %}
+{% block content %}
+<style>
+    .main {
+        box-shadow:
+  2.4px 2.8px 2.2px rgba(0, 0, 0, 0.02),
+  5.8px 6.7px 5.3px rgba(0, 0, 0, 0.028),
+  10.9px 12.5px 10px rgba(0, 0, 0, 0.035),
+  19.4px 22.3px 17.9px rgba(0, 0, 0, 0.042),
+  36.3px 41.8px 33.4px rgba(0, 0, 0, 0.05),
+  87px 100px 80px rgba(0, 0, 0, 0.07)
+;
+
+    }
+</style>
+
+
+<div class="container pt-5 ">
+
+    <h1 class="h5 mb-4">Shopping Cart</h1>
+    {% if not cart_items %}
+    <div class="text-center mt-5">
+        <div>
+        <h2>Your cart is empty</h2>
+        <a href="{% url 'store:all-products' %}" class="btn btn-secondary mt-3">continue Shopping</a>
+    </div>
+    </div>
+    {% else %}
+    <div class="row d-flex g-2 bg-white main">
+        <div class="col-lg-8 col-md-12 border border-white p-4">
+            <ol>
+                {% for cart_item in cart_items %}
+                <li>
+                    <div class="row d-flex justify-content-center">
+                        <div class="col text-center">
+                            <img class="rounded-3" width="200px" src="{{cart_item.product.image1.url}}" alt="" />
+                        </div>
+                        <div class="col my-auto py-3">
+                            <a class="text-dark" href="{{ cart_item.product.get_absolute_url }}">
+                                <b>{{cart_item.product.title}}</b></a>
+                            <br />
+                            <div class=" ">
+                                Quantity :
+                                <div class="d-flex text-center text-dark mt-2">
+                                    <a href="{% url 'cart:cart-add' cart_item.product.id %}"
+                                        style="width: 30px; height: 27px"
+                                        class="bg-light align-middle rounded-2 text-dark"><svg
+                                            xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-caret-up" viewBox="0 0 16 16">
+                                            <path
+                                                d="M3.204 11h9.592L8 5.519 3.204 11zm-.753-.659 4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659z" />
+                                        </svg>
+                                    </a>
+                                    <input class="form-control text-center" style="width: 50px; height: 30px"
+                                        type="button" value="{{cart_item.quantity}}" />
+
+                                    <a href="{% url 'cart:remove-cart' cart_item.product.id %}"
+                                        style="width: 30px; height: 27px" class="bg-light rounded-2 text-dark"><svg
+                                            xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
+                                            <path
+                                                d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col pt-3">
+                            ₹ {{cart_item.product.price}} <br />
+                            <b>₹ {{cart_item.get_total}}</b> <br />
+                            <a href="{% url 'cart:remove-cart-item' cart_item.product.id %}"
+                                class="btn mt-4 btn-md btn-outline-danger align-bottom">remove</a>
+                        </div>
+                    </div>
+                    <!-- <hr class="text-dark" /> -->
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+
+        <div class="col-lg-4 col-md-12 p-4 border border-white">
+            <table class="table">
+                <tr>
+                    <td>Total Price :</td>
+                    <td>₹ {{total}}</td>
+                </tr>
+                <tr>
+                    <td>Tax Amount (18%) :</td>
+                    <td>₹ {{tax_amount}}</td>
+                </tr>
+
+                <tr class="border">
+                    <td><b>Sub Total:</b></td>
+                    <td><b> ₹ {{sub_total}}</b></td>
+                </tr>
+            </table>
+            <div class="d-flex">
+                <a href="{% url 'cart:checkout' %}" class="btn btn-md btn-outline-primary w-50 m-2">Proceed to
+                    checkout</a>
+                <a href="{% url 'store:all-products' %}" class="btn btn-md btn-outline-dark w-50 m-2">continue
+                    Shopping</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock  %}

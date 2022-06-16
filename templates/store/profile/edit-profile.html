@@ -1,0 +1,59 @@
+
+{% extends '../base.html' %}
+{% load static %}
+{% block title %}Profile-edit{% endblock title %}
+{% block content %}
+
+ <div class=" container text-center bg-white mt-4">
+    <main class="form-signin w-100 m-auto ">
+        <form class=" w-50 mx-auto" action="" method="post">
+            {% csrf_token %}
+            <div class=" d-flex">
+                <div class="m-1 w-50 form-floating">
+                    {{form.first_name}}
+                    <label for="floatingInput">Firstname</label>
+                </div>
+                <div class="w-50 m-1 form-floating">
+                    {{form.last_name}}
+                    <label for="floatingInput">Lastname</label>
+                </div>
+            </div>
+            <div class="m-1 form-floating">
+                {{form.email}}
+                <label for="floatingInput">Emal</label>
+            </div>
+            
+            <div class="m-1 form-floating">
+                {{form.mobile}}
+                <label for="floatingInput">Mobile</label>
+            </div>
+            <div class=" m-1 form-floating">
+                {{form.password}}
+                <label for="floatingPassword">Password</label>
+            </div>
+            <div class=" m-1 form-floating">
+                {{form.confirm_password}}
+                <label for="floatingPassword">Confirm Password</label>
+            </div>
+
+            <button class="m-1 mt3 w-100 btn btn-sm btn-outline-primary"
+                type="submit">Update Profile</button>
+            <p><small>( if you are updating profile, you will be redirect to login page
+                    )</small> </p>
+        </form>
+    </main>
+    {% if messages %}
+    <div class="alert alert-danger mx-auto" role="alert">
+
+        <div class="messages">
+        {% for message in messages %}
+            <div{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                {{ message }}
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

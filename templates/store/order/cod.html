@@ -1,0 +1,74 @@
+{% extends '../base.html' %} {% block title %}Payment{% endblock title %}
+{% block content %}
+
+<div class="container mt-4 pt-5 bg-white">
+    <div class="text-success text-center">
+        <h3><b> Your Order Is Successfully Created </b></h3>
+        <h5>we will deliver within 5 days </h5>
+    </div>
+    <div class="row d-flex my-5 justify-content-center">
+        <div class="col-8">
+            <h6 class="ps-2 py-5"> <b> Order Number : {{order_number}}</b></h6>
+            <table class="table pb-5">
+                <thead>
+                    <tr>
+
+                        <th scope="col">Item</th>
+                        <th scope="col">quantity</th>
+                        <th scope="col">price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in ordered_products %}
+                    <tr>
+                        <td>{{product.product.title}}</td>
+                        <td>{{product.quantity}}</td>
+                        <td>₹ {{product.product.price}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class=" d-flex">
+                <div class="col pb-4 pt-5">
+                    <h5>Delivary Address :</h5>
+                    <br><br>
+                    <p>{{address.first_name}} {{address.last_name}}</p>
+                    <p>{{address.building}},
+                        {{address.street}},
+                        {{address.district}},
+                        {{address.state}}, {{address.pin_code}}</p>
+                    {{address.mobile}} <br>
+                    {{address.alt_mobile}}
+                </div>
+                <div class="col row align-items-end">
+                    <table class="d-grid py-5">
+                        <tr>
+                            <td><b>tax amount :</b> </td>
+                            <td>₹ {{tax_amount}} </td>
+                        </tr>
+                        <tr>
+                            <td><b>Total Amount :</b> </td>
+                            <td><b>₹ {{sub_total}}</b></td>
+                        </tr>
+                    </table>
+                    <div class="d-flex justify-content-end pb-5">
+                        <a href="" class="btn btn-sm btn-secondary">view in orders</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    swal("Tank You For ordering with us!", "we will deliver as soon as possible!", "success");
+</script>
+{% endblock %}

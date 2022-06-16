@@ -1,0 +1,37 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<div class="text-center">
+    <main class="form-signin w-100 m-auto r">
+        <form class=" w-25 mx-auto pt-5" method="post">
+                 {% csrf_token %}
+            <h1  class=" h3 mx-auto mb-3 mt-5 fw-normal">Please sign In</h1>
+            <div class="m-1 form-floating">
+                <input type="email" class="form-control" name="email"  id="floatingInput" placeholder="Mobile">
+                <label for="floatingInput">Email</label>
+            </div>
+            <div class=" m-1 form-floating">
+                <input type="password" class="form-control" name="password" id="floatingPassword" placeholder="Password">
+                <label for="floatingPassword">Password</label>
+            </div>
+            
+            <button class="m-1 mt3 w-100 btn btn-lg btn-outline-secondary" type="submit">Sign in</button>
+        </form>
+        <p>if you are not registered please <a href="{% url 'user:register-user' %}">signup</a> </p>
+    </main>
+    
+{% if messages %}
+<div class="alert alert-danger w-25 mx-auto" role="alert">
+  
+<div class="messages">
+    {% for message in messages %}
+     <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>        
+     {{ message }}
+</div>
+    {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+
+{% endblock %}
