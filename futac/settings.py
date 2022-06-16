@@ -29,7 +29,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = ['13.126.27.58']
-STATIC_ROOT = '/var/www/mysite/assets/'
+STATIC_ROOT = os.path.join( BASE_DIR, 'staticfiles')
 
 
 # Application definition
