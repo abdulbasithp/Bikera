@@ -31,7 +31,7 @@ def send_verification_mail(request,user):
     try:       
         current_site    = get_current_site(request)
         email_subject   = 'Activate your account'
-        email_body      = render_to_string('account/user/authentication/activate.html',{
+        email_body      = render_to_string('Account/user/authentication/activate.html',{
         'user':user,
         'domain':current_site,
         'uid':urlsafe_base64_encode(force_bytes(user.pk)),
