@@ -25,7 +25,7 @@ def activate_user(request,uidb64,token):
         user.save()
         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')  
     else:
-        return render(request, 'account/user/authentication/activate-failed.html',{'user':user})
+        return render(request, 'Account/user/authentication/activate-failed.html',{'user':user})
 
 def send_verification_mail(request,user): 
     try:       
@@ -66,7 +66,7 @@ def register_user(request):
     context = {
         'form' : form
     }
-    return render(request, 'account/user/register.html',context)
+    return render(request, 'Account/user/register.html',context)
 
 
 
@@ -98,7 +98,7 @@ def login_user(request):
            
         else:
             messages.error(request, 'user is blocked by admin please contact')        
-    return render(request,'account/user/login.html')
+    return render(request,'Account/user/login.html')
 
 def logout_user(request):
     if request.user.is_authenticated:

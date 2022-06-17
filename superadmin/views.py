@@ -5,7 +5,7 @@ from user.models import Account
 from django.contrib import messages
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
-import locale
+# import locale
 
 from superadmin.forms import ProductForm, BrandAddForm, CategoryAddForm, BlockUserForm
 
