@@ -58,7 +58,7 @@ def register_user(request):
             user.save()
             
             send_verification_mail(request,user)
-            return render(request, 'account/user/authentication/send-msg.html',{'user':user})     
+            return render(request, 'Account/user/authentication/send-msg.html',{'user':user})     
         else:
             messages.error(request, 'Invalid credentials..')
     else:
