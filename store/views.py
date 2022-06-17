@@ -68,7 +68,7 @@ def all_products(request):
 
 def product_detail(request, slug):
     product = Product.objects.get(slug=slug)
-    locale.setlocale(locale.LC_MONETARY,'en_IN')
+    locale.setlocale(locale.LC_MONETARY,'en_US')
     product_price = locale.currency(product.price, grouping=True)
     product_orders = OrderProduct.objects.filter(user=request.user)
     ordered_product = []

@@ -5,7 +5,7 @@ from user.models import Account
 from django.contrib import messages
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
-# import locale
+import locale
 
 from superadmin.forms import ProductForm, BrandAddForm, CategoryAddForm, BlockUserForm
 
@@ -63,8 +63,8 @@ def superadmin_home(request):
     orders_withoutcancel = Order.objects.exclude(shipping_status='Cancelled')
     for order in orders_withoutcancel:
         total_revenue += order.order_total
-    # locale.setlocale(locale.LC_MONETARY,'en_IN')
-    # total_revenue_rupee = locale.currency(total_revenue, grouping=True)
+    locale.setlocale(locale.LC_MONETARY,'en_US')
+    total_revenue_rupee = locale.currency(total_revenue, grouping=True)
     
     context = {
         'number_customer':number_customer ,
@@ -75,7 +75,7 @@ def superadmin_home(request):
         'odata': odata ,
         'olabels': olabel ,
         
-        'total_revenue_rupee': total_revenue,
+        'total_revenue_rupee': total_revenue_rupee,
     }
     return render(request, 'superadmin/dashboard.html', context)
 
