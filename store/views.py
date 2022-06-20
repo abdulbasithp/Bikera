@@ -12,6 +12,7 @@ from user.forms import EditProfileForm
 import locale
 from cart.views import _cart_id
 from wishlist.views import _wishlist_id, wishlist
+from django.contrib.auth.decorators import login_required
 
 
 def categories(request):
@@ -143,7 +144,7 @@ def searched_product(request):
 
         #------------------ profile---------------------------
 
-
+@login_required(login_url='user:login-user')
 def profile_order(request):
 
     user = request.user
@@ -156,6 +157,7 @@ def profile_order(request):
     return render(request, 'store/profile/orders-list.html', context)
 
 
+@login_required(login_url='user:login-user')
 def profile_detail(request):
     user = request.user
     addresses = Address.objects.filter(user=user)
@@ -167,6 +169,8 @@ def profile_detail(request):
     }
     return render(request, 'store/profile/details.html', context)
 
+
+@login_required(login_url='user:login-user')
 def profile_edit(request):
     user = request.user
     form = EditProfileForm(instance=user)
