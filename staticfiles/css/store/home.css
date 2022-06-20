@@ -1,12 +1,11 @@
 .first-jumbo {
-    background-image: url("{% static 'images/home/first-jumbo.jpg' %}");
     background-position: fill;
   }
 .first-jumbo-btn {
     animation: bounce-top 0.9s both;
 }
 .first-jumbo-title{
-    
+    animation: fade-in-left 1s ease-out both; 
 }
 @keyframes bounce-top {
     0% {
