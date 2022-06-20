@@ -1,7 +1,8 @@
-from cart.models import Address
+from cart.models import Address, Cart, CartItem
 from django.shortcuts import redirect, render, get_object_or_404
 from order.models import OrderProduct
 from store.forms import ProductReviewForm
+from wishlist.models import Wishlist, WishlistItem
 from .models import Brand, Product, Category, ProductReview
 from django.contrib import messages
 from django.core.paginator import EmptyPage, Paginator, PageNotAnInteger
@@ -9,6 +10,8 @@ from user.models import Account
 from order.models import Order
 from user.forms import EditProfileForm
 import locale
+from cart.views import _cart_id
+from wishlist.views import _wishlist_id, wishlist
 
 
 def categories(request):
@@ -50,22 +53,6 @@ def product_review(request,id):
         messages.error(request,'your review is not valid')    
         return redirect(url)
     
-def all_products(request):
-    try:
-        products = Product.objects.filter(is_active=True)
-        paginator = Paginator(products, 6)
-        page = request.GET.get('page')
-        paged_products = paginator.get_page(page)
-
-        print(products)
-    except:
-        messages.error(request, 'Products not found!')
-    context = {
-        'products': paged_products,
-    }
-    return render(request, 'store/products/all-product.html', context)
-
-
 def product_detail(request, slug):
     product = Product.objects.get(slug=slug)
     # locale.setlocale(locale.LC_MONETARY,'en_US')
@@ -88,6 +75,31 @@ def product_detail(request, slug):
         'product_reviews':product_reviews ,
     }
     return render(request, 'store/products/detail.html', context)
+    
+def all_products(request):
+    try:
+        wishlist = Wishlist.objects.get(wishlist_id=_wishlist_id(request))
+        wishlist_items = WishlistItem.objects.filter(wishlist=wishlist)
+        print(wishlist_items)
+        cart = Cart.objects.get(cart_id = _cart_id(request))
+        cart_items = CartItem.objects.filter(cart=cart,is_active=True)
+        print(cart_items)
+    except:
+        pass
+    try:
+        products = Product.objects.filter(is_active=True)
+        paginator = Paginator(products, 6)
+        page = request.GET.get('page')
+        paged_products = paginator.get_page(page)
+    except:
+        messages.error(request, 'Products not found!')
+    context = {
+        'products': paged_products,
+    }
+    return render(request, 'store/products/all-product.html', context)
+
+
+
 
 
 def category_list(request, category_slug):

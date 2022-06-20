@@ -1,0 +1,52 @@
+{% extends '../base.html' %} {% block title %}Wishlist{% endblock title %} 
+{% block content %}
+<style>
+  .main {
+    box-shadow: 2.4px 2.8px 2.2px rgba(0, 0, 0, 0.02),
+      5.8px 6.7px 5.3px rgba(0, 0, 0, 0.028),
+      10.9px 12.5px 10px rgba(0, 0, 0, 0.035),
+      19.4px 22.3px 17.9px rgba(0, 0, 0, 0.042),
+      36.3px 41.8px 33.4px rgba(0, 0, 0, 0.05),
+      87px 100px 80px rgba(0, 0, 0, 0.07);
+  }
+</style>
+
+<div class="container pt-5">
+  <h1 class="h5 mb-4">Your Whishlist</h1>
+  {% if not wishlist_items %}
+  <div class="text-center mt-5">
+    <div>
+      <h2>Your wishlist is empty</h2>
+      <a href="{% url 'store:all-products' %}" class="btn btn-secondary mt-3"
+        >continue Shopping</a
+      >
+    </div>
+  </div>
+  {% else %} {% for wishlist_item in wishlist_items %}
+  <div class="row d-flex g-2 bg-white main">
+    <div class="col-lg-6 col-sm-12" width="100%"   >
+      <img
+        class="rounded-3 ps-4"
+        width="80%"
+        src="{{wishlist_item.product.image1.url}}"
+        alt=""
+      />
+    </div>
+   
+    <div class="col-lg-6 col-sm-12 pe-3 text-center my-auto ">
+        <a class="text-dark h4 mb-3" href="{{ wishlist_item.product.get_absolute_url }}">
+            <b>{{wishlist_item.product.title}}</b></a
+          >
+          <br />
+     <span class="h5">Price : ₹ {{wishlist_item.product.price}} </span><br />
+      <a
+        href="{% url 'wishlist:remove-wishlist-item' wishlist_item.product.id %}"
+        class="btn mt-4 btn-md btn-outline-danger align-bottom w-50 mb-4"
+        >remove
+      </a>
+      <!-- <hr class="text-dark" /> -->
+    </div>
+  </div>
+  {% endfor %} {% endif %}
+</div>
+{% endblock %}

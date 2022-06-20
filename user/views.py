@@ -23,7 +23,7 @@ def activate_user(request,uidb64,token):
     if user and generate_token.check_token(user,token):
         user.is_verified = True
         user.save()
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')  
+        return render(request, 'Account/user/authentication/auth-success.html',{'user':user})  
     else:
         return render(request, 'Account/user/authentication/activate-failed.html',{'user':user})
 
@@ -80,24 +80,16 @@ def login_user(request):
         password = request.POST.get('password')
         
         user = authenticate(request, email = email, password = password)
-        print(user)
-        # # emails = []
-        
-        # # for e in Account.objects.filter(is_admin=False):
-        # #     emails.append(e.email)
-        # if email in emails:
-        #     print('email exist')
-        #     user = Account.objects.get(email=email)
-        #     if password == user.password:
+    
         if user is not None:
             if user.is_verified:
                 login(request,user)
-                return redirect('store:user-home')
+                return redirect('store:user-home') 
             else:
                 messages.error(request, 'Email is not verified. Please check your inbox..')
            
         else:
-            messages.error(request, 'user is blocked by admin please contact')        
+            messages.error(request, 'Invalid Credentials!')        
     return render(request,'Account/user/login.html')
 
 def logout_user(request):

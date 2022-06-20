@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'user',
     'superadmin',
     'cart',
+    'wishlist',
     'order',
     'storages',
 ]
@@ -83,6 +84,7 @@ TEMPLATES = [
                 'store.views.categories' ,
                 'store.views.brands', 
                 'cart.context_processors.counter',
+                'wishlist.context_processors.wish_counter',
             ],
         },
     },
