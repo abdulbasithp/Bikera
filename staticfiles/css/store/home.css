@@ -5,8 +5,10 @@
     animation: bounce-top 0.9s both;
 }
 .first-jumbo-title{
+  
     animation: fade-in-left 1s ease-out both; 
 }
+
 @keyframes bounce-top {
     0% {
               transform: translateY(-45px);
@@ -109,4 +111,29 @@
       -webkit-box-shadow: inset 0 0 14px 0px rgba(0, 0, 0, 0.5);
               box-shadow: inset 0 0 14px 0px rgba(0, 0, 0, 0.5);
     }
+  }
+  @media only screen and (max-width: 600px) {
+    .first-jumbo {
+        background: url('/static/images/home/first-jumbo.jpg') 70% 0 no-repeat scroll;
+        background-size: cover;
+      }
+
+  }
+  @media screen and (max-width:1000px) {
+    .carousel-heading {
+      font-size: 2.5rem;
+      font-weight: 500;
+      color: rgb(231, 127, 0);
+      
+    }
+  }
+  @media screen and (max-width:890px) {
+    
+      .carousel-heading {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: rgb(231, 127, 0);
+        
+      }
+  
   }

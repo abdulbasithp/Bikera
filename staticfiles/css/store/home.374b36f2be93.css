@@ -114,7 +114,7 @@
   }
   @media only screen and (max-width: 600px) {
     .first-jumbo {
-        background: url('/static/images/home/first-jumbo.jpg') 70% 0 no-repeat scroll;
+        background: url("/static/images/home/first-jumbo.edd7dde824c5.jpg") 70% 0 no-repeat scroll;
         background-size: cover;
       }
 
