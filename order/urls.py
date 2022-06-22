@@ -6,5 +6,5 @@ app_name = 'order'
 
 urlpatterns = [
     path('payment/',views.place_order , name='place-order'),
-    path("callback/", views.callback, name="callback"),
+    path('payment/paymenthandler/', views.paymenthandler, name='paymenthandler'),
 ]

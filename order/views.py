@@ -8,11 +8,12 @@ from cart.models import Address
 from cart.views import _cart_id
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-
+import razorpay
 from store.models import Product
-from .paytm import generate_checksum, verify_checksum
 
-merchant_key = str(settings.PAYTM_SECRET_KEY)
+razorpay_client = razorpay.Client(
+    auth=(settings.RAZ_KEY_ID, settings.RAZ_KEY_SECRET))
+
 
 def place_order(request, total=0, quantity=0):
     
@@ -103,30 +104,21 @@ def place_order(request, total=0, quantity=0):
         # if razorpay choosen 
         elif payment_mode == 'razorpay':
 
-            merchant_key = str(settings.PAYTM_SECRET_KEY)
-            print(type(merchant_key))
+            currency = 'INR'
+            amount = int(sub_total*100)
+            razorpay_order = razorpay_client.order.create(dict(amount=amount,
+                                                       currency=currency,
+                                                       payment_capture='0'))
+            razorpay_order_id = razorpay_order['id']
+            callback_url = 'paymenthandler/'
 
-            param_dict = {
-                    'MID': 'CmlnaY36290103763073',
-                    'ORDER_ID': str(order_number),
-                    'CUST_ID': current_user.id,
-                    'TXN_AMOUNT': str(sub_total),
-                    'CHANNEL_ID': str(settings.PAYTM_CHANNEL_ID),
-                    'WEBSITE': str(settings.PAYTM_WEBSITE),
-                    'EMAIL': str(request.user.email),
-                        # ('MOBILE_N0', '9911223388'),
-                    'INDUSTRY_TYPE_ID': str(settings.PAYTM_INDUSTRY_TYPE_ID),
-                    'CALLBACK_URL': 'http://127.0.0.1:8000/order/callback/',
-
-                # ('PAYMENT_MODE_ONLY', 'NO'),
-            }
-            # print(type(param_dict))
-            #
-            # param_dict.append(('CHECKSUMHASH',)))
-            param_dict['CHECKSUMHASH'] = generate_checksum(param_dict, merchant_key)
-
-
-            print(param_dict)
+            context = {}
+            context['razorpay_order_id'] = razorpay_order_id
+            context['razorpay_merchant_key'] = settings.RAZ_KEY_ID
+            context['razorpay_amount'] = amount
+            context['currency'] = currency
+            context['callback_url'] = callback_url
+            
 
             pdata.payment_id = f'RAZ{order_number}'
             pdata.payment_method = payment_mode
@@ -149,26 +141,40 @@ def place_order(request, total=0, quantity=0):
 
             # cart_items.delete()
 
-            return render(request, 'store/order/payment.html', {'param_dict': param_dict})
+            return render(request, 'store/order/payment.html', context)
 
     else:
         return HttpResponse('error occures!!!')
 
 
 @csrf_exempt
-def callback(request):
-    form = request.POST
-    response_dict = {}
-    for i in form.keys():
-        response_dict[i] = form[i]
-        if i == "CHECKSUMHASH":
-            checksum = form[i]
-    print(checksum)
-    verify = verify_checksum(response_dict,merchant_key,checksum)
-    print(verify)
-    if verify:
-        if response_dict["response"] == '01' :
-            print('order successful')
-        else:
-            print('order unsuccessful')
-    HttpResponse('response area ')
+def paymenthandler(request):
+    if request.method == "POST":
+        try:
+            payment_id = request.POST.get('razorpay_payment_id', '')
+            razorpay_order_id = request.POST.get('razorpay_order_id', '')
+            signature = request.POST.get('razorpay_signature', '')
+            params_dict = {
+                'razorpay_order_id': razorpay_order_id,
+                'razorpay_payment_id': payment_id,
+                'razorpay_signature': signature
+            }
+            result = razorpay_client.utility.verify_payment_signature(
+                params_dict)
+            print(result)
+            if request.method == "POST":
+              amount = request.POST['productid']
+              print(amount)
+            if result is None:
+                try:
+                    razorpay_client.payment.capture(payment_id, amount)
+                    return HttpResponse('payment success')
+                except:
+                    return HttpResponse('payment failed')
+            else:
+                return HttpResponse('result is None')
+        except:
+            return HttpResponseBadRequest('Exeption occurs')
+    else:
+        return HttpResponseBadRequest()
+ 
